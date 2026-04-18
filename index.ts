@@ -402,6 +402,28 @@ function normalizePreset(value: unknown): StatusLinePreset | null {
   return isValidPreset(preset) ? preset : null;
 }
 
+type WelcomeMode = "overlay" | "header" | "off";
+
+function resolveWelcomeMode(settings: Record<string, unknown>): WelcomeMode {
+  const configured = settings.powerlineSplash;
+
+  if (configured === false) {
+    return "off";
+  }
+
+  if (typeof configured === "string") {
+    const mode = configured.trim().toLowerCase();
+    if (mode === "off" || mode === "none" || mode === "disabled") {
+      return "off";
+    }
+    if (mode === "header" || mode === "overlay") {
+      return mode;
+    }
+  }
+
+  return settings.quietStartup === true ? "header" : "overlay";
+}
+
 function hasNonWhitespaceText(text: string): boolean {
   return text.trim().length > 0;
 }
@@ -738,6 +760,7 @@ export default function powerlineFooter(pi: ExtensionAPI) {
     const settings = readSettings();
     showLastPrompt = settings.showLastPrompt !== false;
     config.preset = normalizePreset(settings.powerline) ?? "default";
+    const welcomeMode = resolveWelcomeMode(settings);
     stashedPromptHistory = readPersistedStashHistory();
 
     getThinkingLevelFn = typeof ctx.getThinkingLevel === "function"
@@ -754,9 +777,9 @@ export default function powerlineFooter(pi: ExtensionAPI) {
     if (enabled && ctx.hasUI) {
       setupCustomEditor(ctx);
       if (event.reason === "startup") {
-        if (settings.quietStartup === true) {
+        if (welcomeMode === "header") {
           setupWelcomeHeader(ctx);
-        } else {
+        } else if (welcomeMode === "overlay") {
           setupWelcomeOverlay(ctx);
         }
       } else {

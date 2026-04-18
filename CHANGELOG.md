@@ -2,6 +2,9 @@
 
 ## [Unreleased]
 
+### Added
+- **Configurable splash disable** — Added `"powerlineSplash": false` support in `~/.pi/agent/settings.json` to suppress the startup welcome entirely. `"powerlineSplash": "header"` and `"overlay"` are also supported for explicit mode selection.
+
 ## [0.4.11] - 2026-04-14
 
 ### Fixed

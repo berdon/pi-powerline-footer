@@ -16,6 +16,8 @@ Customizes the default [pi](https://github.com/badlogic/pi-mono) editor with a p
 
 **Welcome overlay** — Branded splash screen shown as centered overlay on startup. Shows gradient logo, model info, keyboard tips, loaded AGENTS.md/extensions/skills/templates counts, and recent sessions. Auto-dismisses after 30 seconds or on any key press.
 
+Set `"powerlineSplash": false` in `~/.pi/agent/settings.json` to disable the splash entirely.
+
 **Rounded box design** — Status renders directly in the editor's top border, not as a separate footer.
 
 **Live thinking level indicator** — Shows current thinking level (`thinking:off`, `thinking:med`, etc.) with color-coded gradient. High and xhigh levels get a rainbow shimmer effect inspired by Claude Code's ultrathink.
@@ -53,6 +55,37 @@ Activates automatically. Toggle with `/powerline`, switch presets with `/powerli
 
 Preset selection is saved to `~/.pi/agent/settings.json` under `powerline` and restored on startup.
 Run `/powerline default` to switch back to the default preset.
+
+## Startup Splash
+
+By default, the extension shows its welcome splash on startup:
+
+- `quietStartup: true` → compact header splash
+- default / unset → centered overlay splash
+
+To disable the splash entirely, add this to `~/.pi/agent/settings.json`:
+
+```json
+{
+  "powerlineSplash": false
+}
+```
+
+You can also set an explicit mode:
+
+```json
+{
+  "powerlineSplash": "overlay"
+}
+```
+
+or:
+
+```json
+{
+  "powerlineSplash": "header"
+}
+```
 
 ## Editor Stash
 
